@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+    - name: dbo
+      description: this data comes is directly ingested by ssis and can technically be considered raw
+      database: Gourmand
+      tables:
+        - name: Business
+          description: raw data with business as the entity
+          columns:
+            - name: alias
+              tests:
+                - unique
+                - not_null
+        - name: County
+          description: raw data with the county as the entity and the predicted population
+          # come back and find a way to make a test for 2 columns +
+        - name: Event
+          description: raw data with event as the entity
+          columns:
+            - name: id
+              tests:
+                - unique
+                - not_null
+        - name: Review
+          description: raw data with review as the entity
+          columns:
+            - name: id
+              tests:
+                - unique
+                - not_null
+        - name: Transactions
+        - name: Categories
