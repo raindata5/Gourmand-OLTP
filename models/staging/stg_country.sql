@@ -2,8 +2,7 @@ with
     Countries
     as
     (
-        SELECT
-            SELECT 
+        SELECT 
             DISTINCT b.[location country] Country
         from {{source("dbo", "Business")}}
     )

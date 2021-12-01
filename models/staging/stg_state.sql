@@ -27,7 +27,7 @@ SELECT
 -- assuming it's the sole member or a state abreviation assuming it's part of a group
     DENSE_RANK() OVER (PARTITION BY StateName ORDER BY AbrvState DESC) stategroup,
     StateName,
-    AbrvState.
+    AbrvState,
     Country
 FROM countyish
 )
