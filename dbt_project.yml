@@ -34,5 +34,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   gourmand_db:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    marts:
+      materialized: table
+      +schema: Production
+    staging:
+      materialized: view
+      +schema: Staging
+    

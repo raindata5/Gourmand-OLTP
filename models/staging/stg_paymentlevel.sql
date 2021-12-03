@@ -10,7 +10,7 @@ with payments as (
 
 payments_cat as (
     select 
-    ROW_NUMBER() OVER(order by price) ChainID,
+    ROW_NUMBER() OVER(order by price) PaymentLevelID,
     price as Price,
     CASE
 
@@ -18,8 +18,13 @@ payments_cat as (
     when price = '{{ level[0] }}' then '{{ level[1] }}'
     {% endfor -%}
     ELSE 'Unknown'
-    END as payment_name
+    END as PaymentLevelName
     from payments
 ) 
 
-select * from payments_cat
+select 
+    PaymentLevelID,
+    Price PaymentLevelSymbol,
+    PaymentLevelName,
+    GETDATE() LastEditedWhen
+from payments_cat

@@ -18,7 +18,7 @@ businessid_tran as (
     t.transactionname,
     t.businessalias
   from business_tran t
-  INNER JOIN staging.stg_business b on t.businessalias = b.BusinessName
+  INNER JOIN {{ ref("stg_business") }} b on t.businessalias = b.BusinessName
 )
 
 select 

@@ -4,10 +4,9 @@ with
     (
         SELECT 
             DISTINCT b.[location country] Country
-        from {{source("dbo", "Business")}}
+        from {{source("dbo", "Business")}} b
     )
-,
 SELECT 
-    ROW_NUMBER() OVER (order BY StateName) CountryID,
+    ROW_NUMBER() OVER (order BY Country) CountryID,
     Country CountryName
 FROM Countries

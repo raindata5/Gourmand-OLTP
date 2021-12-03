@@ -1,3 +1,6 @@
+-- could possibly sitck with chain because I could concatenate and hash
+-- together the categories hash it and then use that to decide  if
+-- 2 business are apart of the same chain
 with business as (
         SELECT
         DENSE_RANK() OVER(ORDER BY b.alias) BusinessID, 
@@ -17,7 +20,10 @@ with business as (
         cast(SUBSTRING(b.phone, 1, CHARINDEX('.', b.phone, 1) -1 ) as nvarchar(20)) BusinessPhone,
         cast(SUBSTRING(b.distance,1, CHARINDEX('.',b.distance,1) -1) as int) DistanceToCounty,
         cast(b.[coordinates latitude] as Decimal(8,6)) Latitude,
-        cast(b.[coordinates longitude] as Decimal(9,6)) Longitude
+        cast(b.[coordinates longitude] as Decimal(9,6)) Longitude,
+        b.id HRID,
+        b.county,
+        cast(b.time_extracted as date) DateSurveyed
 
     from {{source("dbo", "Business")}} b 
 )

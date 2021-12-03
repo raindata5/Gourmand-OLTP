@@ -31,3 +31,4 @@ sources:
                 - not_null
         - name: Transactions
         - name: Categories
+        - name: StateAbbreviations

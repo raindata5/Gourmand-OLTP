@@ -1,0 +1,227 @@
+version: 2
+
+models:
+  - name: stg_businesscategorybridge 
+    description: The available categories for businesses
+    columns:
+      - name: CategoryID
+        description: primary key for stg_businesscategorybridge
+        tests:
+          - unique
+          - not_null
+      - name: CategoryName
+        description: Name for each Category
+        tests:
+          - unique
+  - name: stg_paymentlevel  
+    description: The available price levels for businesses
+    columns:
+      - name: PaymentLevelID
+        description: primary key for stg_paymentlevel
+        tests:
+          - unique
+          - not_null
+      - name: PaymentLevelName
+        description: Name for each PaymentLevel
+        tests:
+          - unique
+      - name: PaymentLevelSymbol
+        description: symbol for each PaymentLevel
+        tests:
+          - unique
+  - name: stg_users 
+    description: users that have posted reviews
+    columns:
+      - name: UserID
+        description: PK
+        tests:
+          - unique
+          - not_null
+  - name: stg_transactiontype 
+    description: None
+    columns:
+      - name: TransactionID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: TransactionName
+        description: Name for the kind of transactions provided e.g. delivery
+        tests:
+          - not_null
+  - name: stg_county 
+    description: None
+    columns:
+      - name: CountyID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: CountyName
+        description: Name for each county
+        tests:
+          - not_null
+  - name: stg_state  
+    description: None
+    columns:
+      - name: StateID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: StateName
+        description: Name for each state
+        tests:
+          - unique
+          - not_null
+      - name: AbrvState
+        description: Name abbreviation for each state
+        tests:
+          - unique
+          # - not_null
+      - name: CountryID
+        description: FK for each Country
+        tests:
+          - relationships:
+              to: ref('stg_country')
+              field: CountryID
+          - not_null
+  - name: stg_country  
+    description: available countries
+    columns:
+      - name: CountryID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: CountryName
+        description: Name for each country
+        tests:
+          - unique
+          - not_null
+  - name: stg_city 
+    description: None
+    columns:
+      - name: CityID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: CityName
+        description: Name for each city
+        tests:
+          - not_null
+      - name: StateID
+        description: FK for each state
+        tests:
+          - relationships:
+              to: ref('stg_state')
+              field: StateID
+          - not_null
+      - name: CountyID
+        description: FK id for each County
+        tests:
+          - relationships:
+              to: ref('stg_county')
+              field: CountyID
+          - not_null
+  - name: stg_countygrowth  
+    description: Annual population estimates for each county 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - CountyID
+            - EstimationYear
+    columns:
+      - name: CountyID
+        description: FK id for each County
+        tests:
+          - relationships:
+              to: ref('stg_county')
+              field: CountyID
+          - not_null
+      - name: EstimatedPopulation
+        description: year for each population estimate
+        tests:
+          - not_null
+  - name: stg_business_transaction_types
+    description: Bridge table for business and transaction types
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - TransactionID
+            - BusinessID
+    columns:
+      - name: TransactionID
+        description: ID for each transaction
+        tests:
+          - relationships:
+              to: ref('stg_transactiontype')
+              field: TransactionID
+          - not_null
+      - name: BusinessID
+        description: ID for each business
+        tests:
+          - relationships:
+              to: ref('stg_business')
+              field: BusinessID
+          - not_null
+  - name: stg_eventcategory  
+    description: categories specifically for the events (1 per event)
+    columns:
+      - name: EventCategoryID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: EventCategoryName
+        description: Name for each event category
+        tests:
+          - unique
+          - not_null
+  - name: stg_business  
+    description: the statistics for a business on a given day
+    columns:
+      - name: BusinessID
+        description: PK
+        tests:
+          - unique
+          - not_null
+      - name: ChainName
+        description: Name for each business chain
+        tests:
+          - not_null
+      # - name: CityID
+      #   description: FK for each city
+      #   tests:
+      #     - not_null
+      # - name: ChainName
+      #   description: Name for each business chain
+      #   tests:
+      #     - not_null
+
+
+
+
+
+  #   columns:
+  #     - name: status
+  #       description: '{{ doc("order_status") }}'
+  #       tests:
+  #         - accepted_values:
+  #             values: ['completed', 'shipped', 'returned', 'placed', 'return_pending']
+  #     - name: order_id
+  #       description: the primary key for the stg_orders table
+  #       tests:
+  #         - unique
+  #     - name: customer_id
+  #       tests:
+  #         - relationships:
+  #             to: ref('stg_customers')
+  #             field: customer_id
+  # - name: stg_payments
+  #   description: '{{doc("payments")}}'
+  #   columns:
+  #     - name: orderid
+  #       tests:
+  #         - not_null

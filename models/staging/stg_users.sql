@@ -1,7 +1,7 @@
-
+--this dense rank is used to get the most up to date user info from the reviews we have
 with most_recent_user as (
 select 
-DENSE_RANK() OVER(PARTITION BY [user id] order by time_created desc) as user_history,
+ROW_NUMBER() OVER(PARTITION BY [user id] order by time_created desc) as user_history,
 [user profile_url] UserProfileURL,
 [user image_url] UserImageURL,
 SUBSTRING([user name], 1, CHARINDEX(' ', [user name])) FirstName,
