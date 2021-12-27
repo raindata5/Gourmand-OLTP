@@ -2,8 +2,8 @@ version: 2
 
 sources:
     - name: dbo
-      description: this data comes is directly ingested by ssis and can technically be considered raw
-      database: Gourmand
+      description: this data comes was directly ingested by ssis and can technically be considered raw
+      database: GourmandOLTP
       tables:
         - name: Business
           description: raw data with business as the entity

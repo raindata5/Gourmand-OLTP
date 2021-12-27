@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: Business 
+    description: Businesses
+    columns:
+      - name: CityID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('City')
+              field: CityID
+      - name: CountyID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('County')
+              field: CountyID
+      - name: StateID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('State')
+              field: StateID
+      - name: PaymentLevelID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('PaymentLevel')
+              field: PaymentLevelID
+  - name: Review 
+    description: Reviews
+    columns: 
+      - name: UserID
+        description: userid generated in db
+        tests:
+          - relationships:
+              to: ref('User')
+              field: UserID
+  - name: County
+    description: Counties
+    columns: 
+      - name: StateID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('stg_state')
+              field: StateID
+  - name: Event
+    description: events
+    columns:
+      - name: EventID
+        description: .
+        tests:
+          - unique
+          - not_null
+      - name: BusinessID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('Business')
+              field: BusinessID
+      - name: CityID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('City')
+              field: CityID
+  - name: BusinessCategoryBridge
+    description: .
+    columns: 
+      - name: BusinessID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('Business')
+              field: BusinessID
+      - name: CategoryID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('BusinessCategory')
+              field: CategoryID
+  - name: BusinessHolding
+    description: .
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - BusinessID
+            - CloseDate
+    columns:
+      - name: BusinessID
+        description: FK
+        tests:
+          - relationships:
+              to: ref('Business')
+              field: BusinessID
+
+# businesscategory bridge

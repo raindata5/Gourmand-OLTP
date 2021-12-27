@@ -8,5 +8,6 @@ GROUP by e.category
 
 select 
     ROW_NUMBER() OVER(order by c.category) EventCategoryID,
-    c.category EventCategoryName
+    c.category EventCategoryName,
+    GETDATE() LastEditedWhen
 FROM categories_cte c

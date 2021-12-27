@@ -2,17 +2,21 @@ version: 2
 
 models:
   - name: stg_businesscategorybridge 
-    description: The available categories for businesses
+    description: bridge table of categories for businesses
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - CategoryID
+            - BusinessID
     columns:
       - name: CategoryID
-        description: primary key for stg_businesscategorybridge
+        description: ID for each category
         tests:
-          - unique
           - not_null
-      - name: CategoryName
-        description: Name for each Category
+      - name: BusinessID
+        description: ID for each Business
         tests:
-          - unique
+          - not_null
   - name: stg_paymentlevel  
     description: The available price levels for businesses
     columns:
@@ -85,7 +89,6 @@ models:
           - relationships:
               to: ref('stg_country')
               field: CountryID
-          - not_null
   - name: stg_country  
     description: available countries
     columns:
@@ -102,7 +105,7 @@ models:
   - name: stg_city 
     description: None
     columns:
-      - name: CityID
+      - name: CityID 
         description: PK
         tests:
           - unique
@@ -111,15 +114,15 @@ models:
         description: Name for each city
         tests:
           - not_null
-      - name: StateID
-        description: FK for each state
+      - name: StateID 
+        description: FK for each state (possibly remove to allow for no known relation to countys)
         tests:
           - relationships:
               to: ref('stg_state')
               field: StateID
           - not_null
       - name: CountyID
-        description: FK id for each County
+        description: FK id for each County (possibly remove to allow for no known relation to countys)
         tests:
           - relationships:
               to: ref('stg_county')

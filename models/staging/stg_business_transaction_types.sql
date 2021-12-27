@@ -2,6 +2,7 @@
 -- if no reported transactiontype
 WITH business_tran as (
   SELECT
+    distinct
     tt.transactionid,
     tt.transactionname,
     t.businessalias
@@ -23,6 +24,7 @@ businessid_tran as (
 
 select 
   businessid BusinessID,
-  transactionid TransactionID
+  transactionid TransactionID,
+  GETDATE() LastEditedWhen
 FROM businessid_tran
 -- ORDER BY BusinessID, TransactionID tbd...

@@ -8,5 +8,6 @@ with
     )
 SELECT 
     ROW_NUMBER() OVER (order BY Country) CountryID,
-    Country CountryName
+    Country CountryName,
+    GETDATE() LastEditedWhen
 FROM Countries

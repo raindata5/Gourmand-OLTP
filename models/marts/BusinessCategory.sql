@@ -5,7 +5,7 @@ with
     (
         select
             *
-        from {{ ref("stg_category") }}
+        from {{ ref("stg_businesscategory") }}
     )
     
 

@@ -7,7 +7,7 @@ with
         SELECT
             ROW_NUMBER() OVER(order by r.time_created) ReviewID,
             r.url ReviewURL,
-            r.text ReviewExtract,
+            replace(r.text,'\n','') ReviewExtract,
             r.rating ReviewRating,
             su.UserID,
             b.BusinessID,

@@ -7,13 +7,19 @@ with first_event as (
         e.attending_count Attending,
 -- cost was showing up as blanks without nulls
         case e.cost
-        when '' then 0
-        else e.cost 
+        when '' then 0.0
+        else cast(e.cost as numeric(15,0))
         end as Cost,
-        e.[description] EventDescription,
+        replace(e.[description],'\n','') EventDescription,
         e.interested_count Interested,
-        CAST(e.latitude as Decimal(8,6)) Latitude,
-        CAST(e.longitude as Decimal(9,6)) Longitude,
+		case e.latitude
+		when '' then NULL
+		else e.latitude
+		end as Latitude,
+		case e.longitude
+		when '' then NULL
+		else e.longitude
+		end as Longitude,
 -- offset due to ISO 8601 being used
         CAST(e.time_start as datetimeoffset) StartTime,
         CASE e.time_end 
@@ -24,7 +30,7 @@ with first_event as (
         when '' THEN null 
         else e.tickets_url
         end as TicketsURL,
-        e.name EventName,
+        replace(e.[name],'\n','') EventName,
         e.event_site_url EventSiteURL,
         e.is_free Free,
 -- going to make these null instead of false to implement
