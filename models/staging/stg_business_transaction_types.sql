@@ -3,28 +3,28 @@
 WITH business_tran as (
   SELECT
     distinct
-    tt.transactionid,
-    tt.transactionname,
+    tt.TransactionID,
+    tt.TransactionName,
     t.businessalias
 
 
-  FROM {{ source("dbo", "Transactions")}} t
-  INNER JOIN {{ref("stg_transactiontype")}} tt on t.[transaction] = tt.transactionname
+  FROM {{ source("public", "Transactions")}} t
+  INNER JOIN {{ref("stg_transactiontype")}} tt on t."transaction" = tt."TransactionName"
 ),
 
 businessid_tran as (
   SELECT
     b.businessid,
-    t.transactionid,
-    t.transactionname,
-    t.businessalias
+    t.TransactionID,
+    t.TransactionName,
+    t."businessalias"
   from business_tran t
   INNER JOIN {{ ref("stg_business") }} b on t.businessalias = b.BusinessName
 )
 
 select 
   businessid BusinessID,
-  transactionid TransactionID,
-  GETDATE() LastEditedWhen
+  TransactionID TransactionID,
+  cast(now() as timestamp(3) without time zone) LastEditedWhen
 FROM businessid_tran
 -- ORDER BY BusinessID, TransactionID tbd...

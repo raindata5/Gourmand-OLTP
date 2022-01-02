@@ -3,11 +3,11 @@ with
     as
     (
         SELECT 
-            DISTINCT b.[location country] Country
-        from {{source("dbo", "Business")}} b
+            DISTINCT b."location country" Country
+        from {{source("public", "Business")}} b
     )
 SELECT 
     ROW_NUMBER() OVER (order BY Country) CountryID,
     Country CountryName,
-    GETDATE() LastEditedWhen
+    cast(now() as timestamp(3) without time zone) LastEditedWhen
 FROM Countries

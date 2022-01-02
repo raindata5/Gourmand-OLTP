@@ -12,10 +12,10 @@ with
             su.UserID,
             b.BusinessID,
             r.time_created CreatedAt,
-            GETDATE() InsertedAt
-        from {{ source("dbo", "Review") }} r
-        INNER join {{ ref("stg_users") }} su on r.[user profile_url]=su.UserProfileURL
-        LEFT JOIN {{ ref("stg_business") }} b on r.id = b.HRID
+            cast(now() as timestamp(3) without time zone) InsertedAt
+        from {{ source("public", "Review") }} r
+        INNER join {{ ref("stg_users") }} su on r."user profile_url"=su.UserProfileURL
+        LEFT JOIN {{ ref("stg_business") }} b on r.business_id = b.HRID
 
     )
 select *

@@ -209,7 +209,7 @@ models:
 
   #   columns:
   #     - name: status
-  #       description: '{{ doc("order_status") }}'
+  #       description: '{{ doc(order_status) }}'
   #       tests:
   #         - accepted_values:
   #             values: ['completed', 'shipped', 'returned', 'placed', 'return_pending']
@@ -223,7 +223,7 @@ models:
   #             to: ref('stg_customers')
   #             field: customer_id
   # - name: stg_payments
-  #   description: '{{doc("payments")}}'
+  #   description: '{{doc(payments)}}'
   #   columns:
   #     - name: orderid
   #       tests:

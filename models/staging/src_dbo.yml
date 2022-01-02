@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-    - name: dbo
-      description: this data comes was directly ingested by ssis and can technically be considered raw
+    - name: public
+      description: this data comes was directly ingested by the postgres COPY cmd
       database: GourmandOLTP
       tables:
         - name: Business

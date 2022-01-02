@@ -5,7 +5,7 @@
 with payments as (
     select 
     price
-    from {{source("dbo", "Business")}}
+    from {{source("public", "Business")}}
     GROUP BY price
 ),
 
@@ -15,7 +15,7 @@ payments_cat as (
     CASE
 
     {%- for level in levels2 %}
-    when len(price) = '{{ level[0] }}' then '{{ level[1] }}'
+    when length(price) = '{{ level[0] }}' then '{{ level[1] }}'
     {% endfor -%}
     ELSE 'Unknown'
     END as PaymentLevelSymbol,
@@ -23,7 +23,7 @@ payments_cat as (
     CASE
 
     {%- for level in levels %}
-    when len(price) = '{{ level[0] }}' then '{{ level[1] }}'
+    when length(price) = '{{ level[0] }}' then '{{ level[1] }}'
     {% endfor -%}
     ELSE 'Unknown'
     END as PaymentLevelName
@@ -37,8 +37,8 @@ select
 from payments_cat
 ) 
 select 
-    ROW_NUMBER() OVER( order by len(PaymentLevelSymbol) ASC) PaymentLevelID,
+    ROW_NUMBER() OVER( order by length(PaymentLevelSymbol) ASC) PaymentLevelID,
     PaymentLevelSymbol,
     PaymentLevelName,
-    GETDATE() LastEditedWhen
+    cast(now() as timestamp(3) without time zone) LastEditedWhen
 from groups

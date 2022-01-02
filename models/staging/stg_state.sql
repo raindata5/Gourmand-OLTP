@@ -8,16 +8,16 @@ with
         --     c.CountyName ,
         --     c.StateName ,
         --     sa.Postal_Abbreviation AbrvState,
-        --     b.[location country] Country
+        --     b."location country" Country
     select 
         c.CountyName ,
         c.StateName ,
         case
-        when sa.Postal_Abbreviation is null then c.StateName
-        else sa.Postal_Abbreviation
+        when sa."Postal_Abbreviation" is null then c.StateName
+        else sa."Postal_Abbreviation"
         end as AbrvState
     from {{ref("stg_county")}} c 
-    LEFT JOIN {{source("dbo", "StateAbbreviations")}} sa on c.StateName = sa.Us_State
+    LEFT JOIN {{source("public", "StateAbbreviations")}} sa on c.StateName = sa."Us_State"
     
 
 ),
@@ -26,9 +26,9 @@ counties2 as (
         c1.CountyName,
         c1.StateName,
         c1.AbrvState,
-        b.[location country] Country
+        b."location country" Country
     from counties1 c1
-    LEFT JOIN {{source("dbo", "Business")}} b on c1.CountyName = b.county and AbrvState=b.[location state]
+    LEFT JOIN {{source("public", "Business")}} b on c1.CountyName = b.county and AbrvState=b."location state"
 ),
 countyish as
 (   SELECT
@@ -67,7 +67,7 @@ SELECT
     end as AbrvState
     ,
     c.CountryID CountryID,   
-    GETDATE() LastEditedWhen
+    cast(now() as timestamp(3) without time zone) LastEditedWhen
 FROM countyish2 c2
 left join {{ref("stg_country")}} c on c2.Country=c.CountryName
 where c2.stategroup = 1

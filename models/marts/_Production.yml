@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: Business 
+  - name: business 
     description: Businesses
     columns:
       - name: CityID
@@ -28,7 +28,7 @@ models:
           - relationships:
               to: ref('PaymentLevel')
               field: PaymentLevelID
-  - name: Review 
+  - name: review 
     description: Reviews
     columns: 
       - name: UserID
@@ -37,7 +37,7 @@ models:
           - relationships:
               to: ref('User')
               field: UserID
-  - name: County
+  - name: county
     description: Counties
     columns: 
       - name: StateID
@@ -46,7 +46,7 @@ models:
           - relationships:
               to: ref('stg_state')
               field: StateID
-  - name: Event
+  - name: event
     description: events
     columns:
       - name: EventID
@@ -66,7 +66,7 @@ models:
           - relationships:
               to: ref('City')
               field: CityID
-  - name: BusinessCategoryBridge
+  - name: businesscategorybridge
     description: .
     columns: 
       - name: BusinessID
@@ -81,7 +81,7 @@ models:
           - relationships:
               to: ref('BusinessCategory')
               field: CategoryID
-  - name: BusinessHolding
+  - name: businessholding
     description: .
     tests:
       - dbt_utils.unique_combination_of_columns:

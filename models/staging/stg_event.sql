@@ -10,7 +10,7 @@ with first_event as (
         when '' then 0.0
         else cast(e.cost as numeric(15,0))
         end as Cost,
-        replace(e.[description],'\n','') EventDescription,
+        replace(e."description",'\n','') EventDescription,
         e.interested_count Interested,
 		case e.latitude
 		when '' then NULL
@@ -21,16 +21,16 @@ with first_event as (
 		else e.longitude
 		end as Longitude,
 -- offset due to ISO 8601 being used
-        CAST(e.time_start as datetimeoffset) StartTime,
+        CAST(e.time_start as timestamp(3) with time zone) StartTime,
         CASE e.time_end 
         when '' then null
-        else CAST(e.time_end as datetimeoffset)
+        else CAST(e.time_end as timestamp(3) with time zone)
         end as EndTime,
         CASE e.tickets_url
         when '' THEN null 
         else e.tickets_url
         end as TicketsURL,
-        replace(e.[name],'\n','') EventName,
+        replace(e."name",'\n','') EventName,
         e.event_site_url EventSiteURL,
         e.is_free Free,
 -- going to make these null instead of false to implement
@@ -45,18 +45,18 @@ with first_event as (
         when 'False' then null
         else cast(e.time_extracted as date)
         end as OfficialDate,
-        cast(e.[location address1]as NVARCHAR(150)) AddressLine1,
-        e.[location address2] AddressLine2,
-        e.[location address3] AddressLine3,
-        cast(e.[location city]as NVARCHAR(50)) CityName,
-        e.[location zip_code] ZipCode,
-        e.[location country] CountryName,
-        e.[location state] AbrvState,
+        cast(e."location address1"as text) AddressLine1,
+        e."location address2" AddressLine2,
+        e."location address3" AddressLine3,
+        cast(e."location city"as text) CityName,
+        e."location zip_code" ZipCode,
+        e."location country" CountryName,
+        e."location state" AbrvState,
 -- have to find a way to make sure this CreatedAt date stays static
         cast(e.time_extracted as date) CreatedAt,
-        getdate() LastEditedWhen,
+        cast(now() as timestamp(3) without time zone) LastEditedWhen,
         e.category 
-    FROM {{source("dbo","Event")}} e
+    FROM {{source("public","Event")}} e
 ),
 normalized_event as (
     select

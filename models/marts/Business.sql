@@ -37,7 +37,7 @@ with
             CityName,
             CASE
             {%- for level in levels2 %}
-            when len(price) = '{{ level[0] }}' then '{{ level[1] }}'
+            when length(price) = '{{ level[0] }}' then '{{ level[1] }}'
             {% endfor -%}
             ELSE 'Unknown'
             END as price,
@@ -66,7 +66,7 @@ select
     sc.CountyID,
     sc.StateID,
     pl.PaymentLevelID,
-    GETDATE() LastEditedWhen
+    cast(now() as timestamp(3) without time zone) LastEditedWhen
 
 
 FROM stg_business_dbt sb

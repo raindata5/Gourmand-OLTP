@@ -1,9 +1,9 @@
 with full_location as (
         select 
-        b.[location city] CityName,
-        b.[location state] StateAbrv,
+        b."location city" CityName,
+        b."location state" StateAbrv,
         b.county County
-    FROM {{source("dbo", "Business")}} b
+    FROM {{source("public", "Business")}} b
 ),
 
 normalized_loc as (
@@ -26,7 +26,7 @@ select
     nl.CityName,
     nl.StateID,
     nl.CountyID,
-    getdate() LastEditedWhen
+    cast(now() as timestamp(3) without time zone) LastEditedWhen
 from normalized_loc nl
 GROUP BY nl.CityName, nl.StateID, nl.CountyID
 
@@ -36,10 +36,10 @@ GROUP BY nl.CityName, nl.StateID, nl.CountyID
 -- getting the bad business loc records
 -- with full_location as (
 --         select 
---         b.[location city] CityName,
---         b.[location state] StateAbrv,
+--         b."location city" CityName,
+--         b."location state" StateAbrv,
 --         b.county County
---     FROM "GourmandOLTP"."dbo"."Business" b
+--     FROM "GourmandOLTP"."public"."Business" b
     
 -- )
 --     SELECT
@@ -61,10 +61,10 @@ GROUP BY nl.CityName, nl.StateID, nl.CountyID
 -- for those where neither the county or statename correspond to one in the census
 -- with full_location as (
 --         select 
---         b.[location city] CityName,
---         b.[location state] StateAbrv,
+--         b."location city" CityName,
+--         b."location state" StateAbrv,
 --         b.county County
---     FROM "GourmandOLTP"."dbo"."Business" b
+--     FROM "GourmandOLTP"."public"."Business" b
     
 -- )
 

@@ -19,7 +19,7 @@ with stg_event as (
          CancelDate,
          OfficialDate,
          CreatedAt,
-         GETDATE() LastEditedWhen
+         LastEditedWhen
     from {{ref("stg_event")}}
 )
 SELECT

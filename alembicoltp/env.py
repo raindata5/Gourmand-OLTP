@@ -7,17 +7,17 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from alembic import context
 parser = configparser.ConfigParser()
-parser.read("db.conf")
+# parser.read("db.conf")
 # host = parser.get("mssqlLocal", "host")
 # user = parser.get("mssqlLocal", "user")
 # password = parser.get("mssqlLocal", "password")
 # db = parser.get("mssqlLocal", "db")
 
-host = parser.get("postgres_oltp", "DB_HOST")
-user = parser.get("postgres_oltp", "DB_USER")
-password = parser.get("postgres_oltp", "DB_PASS")
-db = parser.get("postgres_oltp", "DB_NAME")
-port = parser.get("postgres_oltp", "DB_PORT")
+# host = parser.get("postgres_oltp", "DB_HOST")
+# user = parser.get("postgres_oltp", "DB_USER")
+# password = parser.get("postgres_oltp", "DB_PASS")
+# db = parser.get("postgres_oltp", "DB_NAME")
+# port = parser.get("postgres_oltp", "DB_PORT")
 
 
 Base = declarative_base()
@@ -31,8 +31,9 @@ config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
-config.set_main_option("sqlalchemy.url", f"postgresql://{user}:{password}@{host}:{port}/postgres")
+# config.set_main_option("sqlalchemy.url", f"postgresql://{user}:{password}@{host}:{port}/postgres")
 # config.set_main_option("sqlalchemy.url", f"mssql+pymssql://{user}:{password}@{host}/{db}")
+
 
 # add your model's MetaData object here
 # for 'autogenerate' support
